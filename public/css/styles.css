@@ -123,6 +123,25 @@ footer {
   padding: 1rem;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+#inv-display {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+#inv-display li {
+  margin: 1rem;
+  width: 300px;
+  border: 1px solid black;
+  padding: .5rem;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+#inv-display li a {
+  text-decoration: none;
+  color: black;
+}
 
 @media only screen and (max-width: 600px) {
   #wrapper {
