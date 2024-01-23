@@ -12,6 +12,7 @@ body {
   border: 1px solid gray;
   width: 75%;
   margin: 0 auto;
+  padding: .5rem;
 }
 h1, h2 {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
