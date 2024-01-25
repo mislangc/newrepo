@@ -24,7 +24,7 @@ invCont.buildVehicleDetailsPage = async function (req, res, next) {
   const grid = await utilities.buildInventoryDetailView(data)
   let nav = await utilities.getNav()
   const className = data[0].inv_year + ' ' + data[0].inv_make + ' ' + data[0].inv_model
-  res.render("./inventory/classification", {
+  res.render("./inventory/inventoryDetails", {
     title: className,
     nav,
     grid,
