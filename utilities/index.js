@@ -64,13 +64,12 @@ Util.buildInventoryDetailView = async function(vehicle){
   let grid
   let data = vehicle[0]
   if (data){
-    grid += '<h1>' + data.inv_make + ' ' + data.inv_model + '</h1>'
-    grid += '<div id="vehicle-content">'
+    grid = '<div id="vehicle-details-page">'
     grid += '<img src="' + data.inv_image 
     +'" alt="Image of '+ data.inv_make + ' ' + data.inv_model 
     +' on CSE Motors" />'
     grid += '<div id="vehicle-details">'
-    grid += '<h2>' + data.inv_make + data.inv_model + 'Details </h2>'
+    grid += '<h2>' + data.inv_make + ' ' + data.inv_model + ' Details </h2>'
     grid += '<ul class="vehicle-details-list">'
     grid += '<li><strong>Price: $</strong>' + new Intl.NumberFormat('en-US').format(data.inv_price) + '</li>'
     grid += '<li><strong>Description: </strong>' + data.inv_description +'</li>'
@@ -80,7 +79,7 @@ Util.buildInventoryDetailView = async function(vehicle){
     grid += '</div>'
     grid += '</div>'
   } else {
-    grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+    grid += '<p class="notice"> Sorry, no matching vehicles could be found.</p>'
   }
   return grid
 }
