@@ -166,7 +166,52 @@ footer {
   background-color: lightgray;
 }
 
+/*CSS for the Login Page*/
 
+form fieldset {
+  background-color: lightgray;
+  width: 50%;
+  margin: auto;
+}
+
+form fieldset input {
+  display: block;
+  width: 100%;
+}
+
+#submit {
+  width: 25%;
+  margin: auto;
+}
+
+form input, form label, form legend, form span {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+.form-italics {
+  display: block;
+  margin: .5rem;
+}
+
+input:required:invalid, input:focus:invalid {
+  /* insert your own styles for invalid form input */
+  background-color: rgb(218, 190, 194);
+}
+
+input:required:valid {
+  /* insert your own styles for valid form input */
+  background-color: rgb(118, 216, 255);
+ }
+
+.notice {
+  font-size: larger;
+  color: red;
+  font-style: italic;
+  list-style-type: none;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
 
 @media only screen and (max-width: 600px) {
   #wrapper {
@@ -186,5 +231,8 @@ footer {
   }
   #vehicle-details-page {
     flex-direction: column;
+  }
+  form fieldset {
+    width: 80%;
   }
 }
