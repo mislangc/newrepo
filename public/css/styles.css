@@ -179,8 +179,14 @@ form fieldset input {
   width: 100%;
 }
 
+form fieldset label {
+  display: block;
+  margin-bottom: 0;
+  margin-top: 1rem;
+}
+
 #submit {
-  width: 25%;
+  width: 50%;
   margin: auto;
 }
 
@@ -195,22 +201,28 @@ form input, form label, form legend, form span {
   margin: .5rem;
 }
 
-input:required:invalid, input:focus:invalid {
+input:required:invalid, input:focus:invalid, textarea:required:invalid {
   /* insert your own styles for invalid form input */
   background-color: rgb(218, 190, 194);
 }
 
-input:required:valid {
+input:required:valid, textarea:required:valid {
   /* insert your own styles for valid form input */
   background-color: rgb(118, 216, 255);
  }
 
 .notice {
   font-size: larger;
-  color: red;
+  color: rgb(161, 44, 44);
   font-style: italic;
   list-style-type: none;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.management-links {
+  display: block;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  margin: 1rem;
 }
 
 @media only screen and (max-width: 600px) {

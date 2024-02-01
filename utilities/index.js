@@ -84,6 +84,23 @@ Util.buildInventoryDetailView = async function(vehicle){
   return grid
 }
 
+Util.buildManagementLinks = async function() {
+  let links
+  links = '<a class="management-links" href="../../inv/addclass"><h2>Add New Classification</h2></a>'
+  links += '<a class="management-links" href="../../inv/addinv"><h2>Add New Vehicle</h2></a>'
+  return links
+}
+
+Util.getDropDownClassification = async function (req, res, next) {
+  let data = await invModel.getClassifications()
+  let select = '<label for="classification_id">Classification</label>'
+  select += '<select id="classification_id" name="classification_id">'
+  data.rows.forEach((row) => {
+    select += '<option value="' + row.classification_id + '">' + row.classification_name + '</option>'
+  })
+  select += "</select>"
+  return select
+}
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 
