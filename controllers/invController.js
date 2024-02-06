@@ -46,10 +46,12 @@ invCont.buildErrorPage = async function (req, res, next) {
 invCont.buildManagement = async function (req, res, next) {
   const links = await utilities.buildManagementLinks()
   let nav = await utilities.getNav()
+  let classification_list = await utilities.getDropDownClassification()
   res.render("./inventory/management", {
     title: 'Vehicle Management',
     nav,
     links,
+    classification_list,
   })
 }
 
@@ -140,6 +142,106 @@ invCont.registerNewVehicle = async function (req, res) {
       nav,
       errors: null,
       dropdown,
+    })
+  }
+}
+
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id)
+  const invData = await invModel.getInventoryByClassificationId(classification_id)
+  if (invData[0].inv_id) {
+    return res.json(invData)
+  } else {
+    next(new Error("No data returned"))
+  }
+}
+/* ***************************
+ *  Edit / Modify Vehicle Data View
+ * ************************** */
+invCont.buildEditInventoryPage = async function (req, res, next) {
+  const inv_id = parseInt(req.params.inventory_id)
+  let nav = await utilities.getNav()
+  const itemData = await (invModel.getInventoryByInventoryIdAsList(inv_id))
+  let dropdown = await utilities.getDropDownClassification(itemData.classification_id)
+  let name = itemData.inv_make + " " + itemData.inv_model
+  res.render("inventory/edit-inventory", {
+    title: "Edit " + name,
+    nav,
+    dropdown,
+    errors: null,
+    inv_id: itemData.inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_description: itemData.inv_description,
+    inv_image: itemData.inv_image,
+    inv_thumbnail: itemData.inv_thumbnail,
+    inv_price: itemData.inv_price,
+    inv_miles: itemData.inv_miles,
+    inv_color: itemData.inv_color,
+    classification_id: itemData.classification_id
+  })
+}
+
+invCont.updateInventory = async function (req, res) {
+  let nav = await utilities.getNav()
+  let links = await utilities.buildManagementLinks()
+  let dropdown = await utilities.getDropDownClassification()
+  const { 
+    inv_id,
+    inv_make, 
+    inv_model, 
+    inv_year, 
+    inv_description, 
+    inv_image, 
+    inv_thumbnail, 
+    inv_price, 
+    inv_miles, 
+    inv_color, 
+    classification_id 
+  } = req.body
+
+  const updateResult = await invModel.updateInventory(
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+    classification_id
+  )
+
+  if (updateResult) {
+    const itemName = updateResult.inv_make + " " + updateResult.inv_model
+    req.flash("notice", `The ${itemName} was successfully updated!`)
+    res.redirect("/inv/")
+  } else {
+    let dropdown = await utilities.getDropDownClassification(classification_id)
+    const itemName = `${inv_make} ${inv_model}`
+    req.flash("notice", "Sorry, the insert failed.")
+    res.status(501).render("inventory/edit-inventory", {
+      title: "Edit " + itemName,
+      nav,
+      dropdown, // let's try this for now
+      errors: null,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id
     })
   }
 }

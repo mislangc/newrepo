@@ -14,7 +14,7 @@
    </ul>
   <% } %>
   
-<form action="/inv/addinv" method="post">
+<form action="/inv/update" method="post" id="updateForm">
     <fieldset>
         <div><i>All fields are required.</i></div>
         <label for="classification_id">Classification</label>
@@ -27,9 +27,9 @@
         <label for="inv_description">Description</label>
         <textarea name="inv_description" id="inv_description" rows="4" cols="50" required><%= locals.inv_description %></textarea>
         <label for="inv_image">Image Path</label>
-        <input type="text" id="inv_image" name="inv_image" required value="/images/vehicles/no-image.png" value="<%= locals.inv_image %>">
+        <input type="text" id="inv_image" name="inv_image" required value="<%= locals.inv_image %>">
         <label for="inv_thumbnail">Image Thumbnail</label>
-        <input type="text" id="inv_thumbnail" name="inv_thumbnail" required value="/images/vehicles/no-image-tn.png" value="<%= locals.inv_thumbnail %>">
+        <input type="text" id="inv_thumbnail" name="inv_thumbnail" required value="<%= locals.inv_thumbnail %>">
         <label for="inv_price">Price</label>
         <input type="number" id="inv_price" name="inv_price" required value="<%= locals.inv_price %>" placeholder="digits only">
         <label for="inv_year">Year</label>
@@ -38,6 +38,11 @@
         <input type="number" id="inv_miles" name="inv_miles" required placeholder="digits only" value="<%= locals.inv_miles %>">
         <label for="inv_color">Color</label>
         <input type="text" id="inv_color" name="inv_color" required value="<%= locals.inv_color %>">
-        <input type="submit" name="submit" value="Add Vehicle">
+        <button disabled type="submit">Update Vehicle</button>
+        <input type="hidden" name="inv_id"
+          <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+          <% } %>>
     </fieldset>
 </form>
+
+<script src="../../js/inv-update.js"></script>
