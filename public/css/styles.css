@@ -14,7 +14,7 @@ body {
   margin: 0 auto;
   padding: .5rem;
 }
-h1, h2 {
+h1, h2, h3 {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
@@ -233,6 +233,16 @@ tbody td{
 }
 p {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+#show_password_label {
+  display: inline-block;
+  margin: 0;
+}
+#show_password{
+  margin: 0;
+}
+form {
+  margin: 1rem;
 }
 @media only screen and (max-width: 600px) {
   #wrapper {

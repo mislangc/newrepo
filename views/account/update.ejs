@@ -1,0 +1,51 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+<%- messages() %>
+
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+  
+<form action="/account/update" method="post" id="updateForm">
+    <fieldset>
+        <div><i>Make sure you chose the right classification before submitting.</i></div>
+
+        <label for="account_firstname">First Name</label>
+        <input type="text" id="account_firstname" name="account_firstname" required pattern="[^' ']+[a-zA-Z]" value="<%= locals.account_firstname %>">
+        <label for="account_lastname"></label>
+        <input type="text" id="account_lastname" name="account_lastname" required pattern="[^' ']+[a-zA-Z]" value="<%= locals.account_lastname %>">
+        <label for="account_email"></label>
+        <input type="email" id="account_email" name="account_email" required value="<%= locals.account_email %>">
+        
+        <button disabled type="submit">Update</button>
+        <input type="hidden" name="account_id" 
+          <% if(locals.account_id) { %> value="<%= locals.account_id%>"
+          <% } %>>
+    </fieldset>
+</form>
+<h2>Update Password</h2>
+<form action="/account/change" method="post">
+  <fieldset>
+      <div><i>*Note your original password will be changed</i></div>
+      <input type="password" id="account_password" name="account_password" minlength="12" required placeholder="paSSwoRD@#21" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+      <i class="form-italics">Password must contain at least 12 characters, 1 capital letter, 1 number and 1 special character.</i>
+      <label for="show_password" id="show_password_label"><input type="checkbox" name="show_password" id="show_password">Show Password</label>
+      <button type="submit">Change Password</button>
+          <input type="hidden" name="account_id"
+          <% if(locals.account_id) { %> value="<%= locals.account_id%>"
+          <% } %>>
+  </fieldset>
+</form> 
+
+<script src="../../js/show-password.js"></script>
+
+<script src="../../js/inv-update.js"></script>
+

@@ -44,6 +44,7 @@ async function getInventoryByInventoryId(inventory_id) {
 Duplicate functions of get inv by inv id for return as list
 */
 async function getInventoryByInventoryIdAsList(inventory_id) {
+  console.log(inventory_id)
   try {
     const data = await pool.query(
       `SELECT * FROM public.inventory AS i 
@@ -110,6 +111,17 @@ async function updateInventory(inv_id, inv_make, inv_model, inv_year, inv_descri
   }
 }
 
+// Delete the selected vehicle in the database
+async function deleteInventoryItem(inv_id) {
+  try {
+    const sql = 'DELETE FROM inventory WHERE inv_id = $1';
+    const data = await pool.query(sql, [inv_id])
+    return data
+  } catch (error) {
+    new Error("Delete Inventory Error")
+  }
+}
+
 module.exports = {
   getClassifications, 
   getInventoryByClassificationId, 
@@ -119,4 +131,5 @@ module.exports = {
   registerNewVehicle, 
   getInventoryByInventoryIdAsList,
   updateInventory,
+  deleteInventoryItem,
 };
