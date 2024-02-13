@@ -22,3 +22,11 @@
   <h3>Inventory Management</h3>
   <a href="/inv">Manage Inventory</a>
 <% } %>
+
+<% if(locals.accountData.account_type == "Admin") { %>
+  <table id="classificationDisplay"></table>
+  <table id="inventoryDisplay"></table>
+  <script src="../../js/all-inventory.js"></script>
+  <script src="../../js/all-classification.js"></script>
+<% } %>
+

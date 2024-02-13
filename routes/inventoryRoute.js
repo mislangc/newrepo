@@ -16,10 +16,20 @@ router.use(utilities.checkAccountType)
 router.get("/", utilities.handleErrors(invController.buildManagement));
 router.get("/addclass", utilities.handleErrors(invController.buildAddClassification));
 router.get("/addinv", utilities.handleErrors(invController.buildAddInventory));
+router.get("/getClassification", utilities.handleErrors(invController.getAllClassificationJSON))
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+router.get("/getInventory", utilities.handleErrors(invController.getAllInventoryJSON))
 router.get("/edit/:inventory_id", utilities.handleErrors(invController.buildEditInventoryPage))
 //Week 5 Team Activity Delete Route
 router.get("/delete/:inventory_id", utilities.handleErrors(invController.deleteView))
+//Approve requested inventory then update database
+router.get("/approve/:inventory_id", utilities.handleErrors(invController.approveView))
+//Approve Class then update database
+router.get("/approveClass/:classification_id", utilities.handleErrors(invController.approveClassView))
+//Delete item if rejected
+router.get("/reject/:inventory_id", utilities.handleErrors(invController.rejectView))
+//Delete Class if rejected
+router.get("/rejectClass/:classification_id", utilities.handleErrors(invController.rejectClassView))
 // POST
 router.post(
     "/addclass",
@@ -47,5 +57,21 @@ router.post(
 router.post(
   "/delete", 
   invController.deleteItem)
+
+router.post(
+  "/approve", 
+  invController.approveItem)
+
+router.post(
+  "/approveClass", 
+  invController.approveClass)
+
+router.post(
+  "/reject", 
+  invController.rejectItem)
+
+router.post(
+  "/rejectClass", 
+  invController.rejectClass)
 
 module.exports = router;

@@ -244,6 +244,13 @@ p {
 form {
   margin: 1rem;
 }
+#classificationDisplay, #inventoryDisplay {
+  margin: 1rem;
+  text-align: center;
+}
+#inventoryDisplay td {
+  padding-left: 1rem;
+}
 @media only screen and (max-width: 600px) {
   #wrapper {
     width: 100%;

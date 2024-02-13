@@ -7,6 +7,34 @@ async function getClassifications(){
   return await pool.query("SELECT * FROM public.classification ORDER BY classification_name")
 }
 
+async function getClassificationsByClassificationId(classification_id){
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.classification
+      WHERE classification_id = $1`,
+      [classification_id]
+    )
+    return data.rows[0]
+  } catch (error) {
+  console.error("getclassificationbyclassificationid error " + error)
+  }
+}
+/* ***************************
+ *  Get all inventory items
+ * ************************** */
+async function getAllInventory() {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.inventory AS i 
+      JOIN public.classification AS c 
+      ON i.classification_id = c.classification_id `
+    )
+    return data.rows
+  } catch (error) {
+    console.error("getallinventory error " + error)
+  }
+}
+
 /* ***************************
  *  Get all inventory items and classification_name by classification_id
  * ************************** */
@@ -122,8 +150,53 @@ async function deleteInventoryItem(inv_id) {
   }
 }
 
+//Delete the selected classification in the database
+async function deleteClassification(classification_id) {
+  try {
+    const sql = 'DELETE FROM classification WHERE classification_id = $1';
+    const data = await pool.query(sql, [classification_id])
+    return data
+  } catch (error) {
+    new Error("Delete Classification Error")
+  }
+}
+
+//Approve and update inventory to the database
+async function approveInventoryItem(inv_id, inv_approved, account_id, inv_approved_date){
+  try {
+    const sql = "UPDATE public.inventory SET inv_approved = $1, account_id = $2, inv_approved_date = $3 WHERE inv_id = $4 RETURNING *"
+    const data = await pool.query(sql, [
+      inv_approved,
+      account_id,
+      inv_approved_date,
+      inv_id
+    ])
+    return data.rows[0] 
+  } catch (error) {
+    console.error("approve inventory model error: " + error)
+  }
+}
+
+//Approve and update classification to the database
+async function approveClassification(classification_id, classification_approved, account_id, classification_approval_date){
+  try {
+    const sql = "UPDATE public.classification SET classification_approved = $1, account_id = $2, classification_approval_date = $3 WHERE classification_id = $4 RETURNING *"
+    const data = await pool.query(sql, [
+      classification_approved,
+      account_id,
+      classification_approval_date,
+      classification_id,
+    ])
+    return data.rows[0] 
+  } catch (error) {
+    console.error("approve classification model error: " + error)
+  }
+}
+
 module.exports = {
-  getClassifications, 
+  getClassifications,
+  getClassificationsByClassificationId,
+  deleteClassification, 
   getInventoryByClassificationId, 
   getInventoryByInventoryId, 
   registerNewClassification, 
@@ -132,4 +205,7 @@ module.exports = {
   getInventoryByInventoryIdAsList,
   updateInventory,
   deleteInventoryItem,
+  getAllInventory,
+  approveInventoryItem,
+  approveClassification,
 };

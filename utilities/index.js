@@ -8,19 +8,32 @@ const Util = {}
  ************************** */
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications()
+  let invData = await invModel.getAllInventory()
   let list = "<ul>"
   list += '<li><a href="/" title="Home page">Home</a></li>'
   data.rows.forEach((row) => {
-    list += "<li>"
-    list +=
-      '<a href="/inv/type/' +
-      row.classification_id +
-      '" title="See our inventory of ' +
-      row.classification_name +
-      ' vehicles">' +
-      row.classification_name +
-      "</a>"
-    list += "</li>"
+    //Define new variable to hold the number of vehicle found in current running classification
+    let classInventoryCount = 0
+    //Go through every data in the list invData to find matching classification vehicles
+    invData.forEach((inventory) => {
+      //If they match, add 1 to count
+      if (row.classification_id == inventory.classification_id && inventory.inv_approved == true) {
+        classInventoryCount += 1;
+      }
+    })
+    //If the current running classification is approved and has vehicles to display, then display it in the navigation bar.
+    if (row.classification_approved == true && classInventoryCount != 0 ) {
+      list += "<li>"
+      list +=
+        '<a href="/inv/type/' +
+        row.classification_id +
+        '" title="See our inventory of ' +
+        row.classification_name +
+        ' vehicles">' +
+        row.classification_name +
+        "</a>"
+      list += "</li>"
+    }
   })
   list += "</ul>"
   return list
@@ -34,23 +47,25 @@ Util.buildClassificationGrid = async function(data){
     if(data.length > 0){
       grid = '<ul id="inv-display">'
       data.forEach(vehicle => { 
-        grid += '<li>'
-        grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
-        + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
-        + 'details"><img src="' + vehicle.inv_thumbnail 
-        +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
-        +' on CSE Motors" /></a>'
-        grid += '<div class="namePrice">'
-        grid += '<hr />'
-        grid += '<h2>'
-        grid += '<a href="../../inv/detail/' + vehicle.inv_id +'" title="View ' 
-        + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
-        + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
-        grid += '</h2>'
-        grid += '<span>$' 
-        + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
-        grid += '</div>'
-        grid += '</li>'
+        if (vehicle.inv_approved == true) {
+          grid += '<li>'
+          grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
+          + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
+          + 'details"><img src="' + vehicle.inv_thumbnail 
+          +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
+          +' on CSE Motors" /></a>'
+          grid += '<div class="namePrice">'
+          grid += '<hr />'
+          grid += '<h2>'
+          grid += '<a href="../../inv/detail/' + vehicle.inv_id +'" title="View ' 
+          + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
+          + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
+          grid += '</h2>'
+          grid += '<span>$' 
+          + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
+          grid += '</div>'
+          grid += '</li>'
+        }
       })
       grid += '</ul>'
     } else { 
@@ -97,11 +112,13 @@ Util.getDropDownClassification = async function (selectedClassificationId) {
   let data = await invModel.getClassifications()
   let select = '<select id="classification_id" name="classification_id">'
   data.rows.forEach((row) => {
-    select += '<option value="' + row.classification_id + '"'
-    if (selectedClassificationId == row.classification_id) {
-      select += ' selected' 
+    if (row.classification_approved == true) {
+      select += '<option value="' + row.classification_id + '"'
+      if (selectedClassificationId == row.classification_id) {
+        select += ' selected' 
+      }
+      select += '>' + row.classification_name + '</option>'
     }
-    select += '>' + row.classification_name + '</option>'
   })
   select += "</select>"
   return select
